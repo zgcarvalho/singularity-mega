@@ -1,0 +1,30 @@
+BootStrap: docker
+From: debian:bookworm-slim
+
+
+%files 
+# copy unziped files. Alternatively, it can be downloaded from the internet and extracted.
+../repos/mega_11.0.13-1_amd64.deb /opt/
+
+
+%post
+apt update 
+apt install -y locales
+sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
+LANG=en_US.UTF-8  
+LANGUAGE=en_US:en  
+
+apt install -y libgconf-2-4 libgtk2.0-bin libgtk2.0-0 libcanberra-gtk-module appmenu-gtk2-module libatk-adaptor 
+dpkg -i /opt/mega_11.0.13-1_amd64.deb
+
+%environment
+export GTK_THEME=Arc
+   
+
+%runscript 
+mega 
+
+%labels
+Author jose.pereira@lnbio.cnpem.br
+Version v0.1
+Info OpenSuSE Tumbleweed with FIJI preinstalled.
